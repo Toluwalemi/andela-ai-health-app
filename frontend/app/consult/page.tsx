@@ -5,7 +5,7 @@ import { useState } from "react";
 
 type Result = {
   summary: string;
-  next_steps: string;
+  next_steps: string[];
   patient_email: string;
 };
 
@@ -89,9 +89,11 @@ export default function ConsultPage() {
           </div>
           <div>
             <h2>Next steps</h2>
-            <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>
-              {result.next_steps}
-            </pre>
+            <ul style={{ margin: 0, paddingLeft: 20 }}>
+              {result.next_steps.map((step, i) => (
+                <li key={i}>{step}</li>
+              ))}
+            </ul>
           </div>
           <div>
             <h2>Patient email</h2>

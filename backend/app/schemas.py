@@ -7,5 +7,5 @@ class ConsultationRequest(BaseModel):
 
 class ConsultationResponse(BaseModel):
     summary: str
-    next_steps: str
+    next_steps: list[str]
     patient_email: str

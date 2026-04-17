@@ -1,10 +1,13 @@
 import json
+import logging
 
 from fastapi import HTTPException, status
 from openai import AsyncOpenAI
 
 from app.config import get_settings
 from app.schemas import ConsultationResponse
+
+logger = logging.getLogger("app.llm")
 
 SYSTEM_PROMPT = """You are a medical scribe assistant.
 Given raw consultation notes, return JSON with exactly three fields:
@@ -40,6 +43,7 @@ async def summarise_consultation(notes: str) -> ConsultationResponse:
         payload = json.loads(raw)
         return ConsultationResponse(**payload)
     except (json.JSONDecodeError, ValueError) as exc:
+        logger.error("LLM response parse failed: %s\nRaw response: %r", exc, raw)
         raise HTTPException(
             status.HTTP_502_BAD_GATEWAY,
             f"Upstream model returned an unparseable response: {exc}",
